@@ -26,19 +26,19 @@ jobs:
         IFS=',' read -r -a image_array <<< "$images"
         for image in "${image_array[@]}"; do
           docker pull "${image}" --platform "linux/amd64"
-          docker save "${image}" | gzip > "${image//\//_}-amd64.tar.gz"
+          docker save "${image}" | gzip > "${image//\//_}-amd64-docker-image.tar.gz"
         done
 
-    - name: Compress the TGZ files
-      run: tar -czf x86-64-images.tar.gz *-amd64.tar.gz
+    #- name: Compress the TGZ files
+      #run: tar -czf x86-64-images.tar.gz *-amd64-docker-image.tar.gz
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: docker-images-tar.gz
-        path: x86-64-images.tar.gz
+        name: docker-image-tar.gz
+        path: "${image//\//_}-amd64-docker-image.tar.gz"  # x86-64-images.tar.gz
         retention-days: 1  # 将保留天数设置为 1 天 最多可设置90天
 
     - name: Clean up intermediate files
       run: |
-        rm *-amd64.tar.gz
+        rm *-amd64-docker-image.tar.gz

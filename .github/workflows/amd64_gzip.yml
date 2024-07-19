@@ -29,7 +29,7 @@ jobs:
           docker save "${image}" | gzip > "${image//\//_}-amd64-docker-image.tar.gz"
         done
 
-    - name: Compress the TGZ files
+    - name: Compress the gzip files
       #run: tar -czf x86-64-images.tar.gz *-amd64-docker-image.tar.gz
       run: zip x86-64-images.zip *-amd64-docker-image.tar.gz
 

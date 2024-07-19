@@ -29,14 +29,15 @@ jobs:
           docker save "${image}" | gzip > "${image//\//_}-amd64-docker-image.tar.gz"
         done
 
-    #- name: Compress the TGZ files
+    - name: Compress the TGZ files
       #run: tar -czf x86-64-images.tar.gz *-amd64-docker-image.tar.gz
+      run: zip x86-64-images.zip *-amd64-docker-image.tar.gz
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: docker-image-tar.gz
-        path: ${image//\//_}-amd64-docker-image.tar.gz  # x86-64-images.tar.gz
+        path: x86-64-images.zip  # x86-64-images.tar.gz
         retention-days: 1  # 将保留天数设置为 1 天 最多可设置90天
 
     - name: Clean up intermediate files

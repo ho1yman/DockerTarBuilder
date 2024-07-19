@@ -1,5 +1,4 @@
-name: ARM64 Pull and Save Docker Image
-
+name: ARM64 Pull and Save
 on:
   workflow_dispatch:
     inputs:

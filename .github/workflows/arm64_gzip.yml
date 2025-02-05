@@ -1,4 +1,4 @@
-name: ARM64 Pull and Save
+name: ARM64 Pull and Save to Gzip
 on:
   workflow_dispatch:
     inputs:

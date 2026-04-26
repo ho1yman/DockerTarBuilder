@@ -31,13 +31,14 @@ jobs:
 
     - name: Compress the gzip files
       #run: tar -czf x86-64-images.tar.gz *-amd64-docker-image.tar.gz
-      run: zip x86-64-images.zip *-amd64-docker-image.tar.gz
+      #run: zip x86-64-images.zip *-amd64-docker-image.tar.gz
+      run: mkdir -p x86-64-images && cp *-amd64-docker-image.tar.gz x86-64-images/
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: docker-image-zip
-        path: x86-64-images.zip  # x86-64-images.tar.gz
+        path: x86-64-images    # x86-64-images.zip  # x86-64-images.tar.gz
         retention-days: 1  # 将保留天数设置为 1 天 最多可设置90天
 
     - name: Clean up intermediate files

@@ -1,4 +1,4 @@
-name: ARM32 Pull and Save
+name: arm32 Pull and Save
 
 on:
   workflow_dispatch:

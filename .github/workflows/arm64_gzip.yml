@@ -8,7 +8,7 @@ on:
         default: 'alpine:latest,ubuntu:latest'  # 设置默认的 Docker 镜像列表
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 升级到 v6/v7 后可移除此行
 
 jobs:
   pull_and_package:
@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4.2.2
+      uses: actions/checkout@v6.0.2
 
     - name: Pull Docker Images and Package
       run: |
@@ -34,7 +34,7 @@ jobs:
       run: mkdir -p arm64-images && cp *-arm64-docker-image.tar.gz arm64-images/
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4.6.2
+      uses: actions/upload-artifact@v6.0.0
       with:
         name: docker-images-zip
         path: arm64-images  # arm64-images.zip

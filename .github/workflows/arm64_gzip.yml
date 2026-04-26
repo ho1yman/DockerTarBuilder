@@ -7,13 +7,16 @@ on:
         required: true
         default: 'alpine:latest,ubuntu:latest'  # 设置默认的 Docker 镜像列表
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   pull_and_package:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2
 
     - name: Pull Docker Images and Package
       run: |
@@ -21,17 +24,20 @@ jobs:
         IFS=',' read -r -a image_array <<< "$images"
         for image in "${image_array[@]}"; do
           docker pull "${image}" --platform "linux/arm64"
-          docker save "${image}" | gzip > "${image//\//_}-arm64-docker-image.tar.gz"
+          safe_name="${image//\//_}"
+          safe_name="${safe_name//:/_}"
+          docker save "${image}" | gzip > "${safe_name}-arm64-docker-image.tar.gz"
         done
 
     - name: Compress the gzip files
-      run: zip arm64-images.zip *-arm64-docker-image.tar.gz
+      #run: zip arm64-images.zip *-arm64-docker-image.tar.gz
+      run: mkdir -p arm64-images && cp *-arm64-docker-image.tar.gz arm64-images/
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.6.2
       with:
-        name: docker-images-tar
-        path: arm64-images.zip
+        name: docker-images-zip
+        path: arm64-images  # arm64-images.zip
         retention-days: 1  # 将保留天数设置为 1 天 最多可设置90天
 
     - name: Clean up intermediate files

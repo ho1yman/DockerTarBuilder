@@ -26,7 +26,9 @@ jobs:
         IFS=',' read -r -a image_array <<< "$images"
         for image in "${image_array[@]}"; do
           docker pull "${image}" --platform "linux/amd64"
-          docker save "${image}" | gzip > "${image//\//_}-amd64-docker-image.tar.gz"
+          safe_name="${image//\//_}"
+          safe_name="${safe_name//:/_}"
+          docker save "${image}" | gzip > "${safe_name}-amd64-docker-image.tar.gz"
         done
 
     - name: Compress the gzip files
